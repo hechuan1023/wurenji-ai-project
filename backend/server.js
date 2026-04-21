@@ -2,21 +2,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const http = require('http');
-const socketIo = require('socket.io');
+// Vercel不支持WebSocket，暂时注释掉
+// const http = require('http');
+// const socketIo = require('socket.io');
 
 // 加载环境变量
 dotenv.config();
 
 // 创建Express应用
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-  }
-});
+// Vercel不支持WebSocket，使用普通Express应用
+// const server = http.createServer(app);
+// const io = socketIo(server, {
+//   cors: {
+//     origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE']
+//   }
+// });
 
 // 中间件
 app.use(cors());
@@ -68,10 +70,20 @@ io.on('connection', (socket) => {
   });
 });
 
+// 健康检查端点
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    database: 'connected'
+  });
+});
+
 // 路由
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
-app.use('/api/orders', require('./routes/orders'));
+app.use('/api/orders', require('./orders'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/notifications', require('./routes/notifications'));
 
@@ -93,12 +105,7 @@ app.use('*', (req, res) => {
   });
 });
 
-// 启动服务器
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`服务器运行在端口 ${PORT}`);
-  console.log(`环境: ${process.env.NODE_ENV}`);
-  console.log(`API文档: http://localhost:${PORT}/api-docs`);
-});
+// Vercel Serverless函数导出
+module.exports = server;
 
 module.exports = app;
