@@ -1,0 +1,23 @@
+{
+  "name": "drone-navigation-platform",
+  "version": "1.0.0",
+  "description": "无人机飞手导航平台，连接飞手与农户的智能服务平台",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "live-server",
+    "test": "echo \"暂无测试\" && exit 0"
+  },
+  "keywords": [
+    "drone",
+    "navigation",
+    "agriculture",
+    "高德地图",
+    "无人机"
+  ],
+  "author": "开发者",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

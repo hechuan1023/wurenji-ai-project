@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无人机飞手导航平台</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-drone"></i>
+                <h1>无人机导航平台</h1>
+            </div>
+            <p class="subtitle">连接飞手与农户的智能服务平台</p>
+        </header>
+
+        <!-- 订单列表 -->
+        <main class="main-content">
+            <div class="orders-section">
+                <h2 class="section-title">待接订单</h2>
+                <div class="order-list" id="orderList">
+                    <!-- 订单将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 导航模态框 -->
+        <div id="navigationModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>导航到农田</h3>
+                    <span class="close-btn" onclick="closeNavigationModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="map" class="map-container"></div>
+                    <div class="order-info">
+                        <h4 id="farmerName"></h4>
+                        <p id="farmAddress"></p>
+                        <p id="distance"></p>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="startNavigation()">
+                            <i class="fas fa-location-arrow"></i> 开始导航
+                        </button>
+                        <button class="btn btn-secondary" onclick="callFarmer()">
+                            <i class="fas fa-phone"></i> 联系农户
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 登录模态框 -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>用户登录</h3>
+                    <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginPhone">手机号</label>
+                            <input type="tel" id="loginPhone" class="form-input" placeholder="请输入手机号" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">密码</label>
+                            <input type="password" id="loginPassword" class="form-input" placeholder="请输入密码" required>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary">登录</button>
+                            <button type="button" class="btn btn-secondary" onclick="showRegisterModal()">注册</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 注册模态框 -->
+        <div id="registerModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>用户注册</h3>
+                    <span class="close-btn" onclick="closeRegisterModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="registerUsername">用户名</label>
+                            <input type="text" id="registerUsername" class="form-input" placeholder="请输入用户名" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone">手机号</label>
+                            <input type="tel" id="registerPhone" class="form-input" placeholder="请输入手机号" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">密码</label>
+                            <input type="password" id="registerPassword" class="form-input" placeholder="请输入密码" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="userType">用户类型</label>
+                            <select id="userType" class="form-input" required>
+                                <option value="">请选择用户类型</option>
+                                <option value="pilot">无人机飞手</option>
+                                <option value="farmer">农户</option>
+                            </select>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary">注册</button>
+                            <button type="button" class="btn btn-secondary" onclick="showLoginModal()">返回登录</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+    <!-- 高德地图API - 请替换为你自己的API密钥 -->
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=你的高德地图API密钥"></script>
+    <script src="script.js"></script>
+</body>
+</html>
